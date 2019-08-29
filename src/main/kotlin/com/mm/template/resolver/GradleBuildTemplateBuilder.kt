@@ -14,7 +14,7 @@ class GradleBuildTemplateBuilder(
     private val fileCreator: FileCreator
 ) : TemplateBuilder {
 
-  private val genFileName = "build.gradle"
+  private val genFileName = "/build.gradle"
 
   override fun build(modules: Map<Module, String>) {
     val greeterClass = ClassName("", "Greeter")

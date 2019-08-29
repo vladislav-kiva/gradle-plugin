@@ -1,0 +1,17 @@
+apply plugin: "kotlin"
+apply plugin: "kotlin-spring"
+
+dependencies {
+  compile "com.idf.soul:base-spring5:${soulVersion}"
+  compile "com.idf.soul:mm-event-bus:${soulVersion}"
+  compile "com.idf.soul:config-retrofit:${soulVersion}"
+  compile "com.mm.platform:mm-task:${basePlatformVersion}"
+  compile (mmproject(':core-domain:investment:mintos:mintos-integration')) {
+    exclude module: ':com.idf.soul:base-spring'
+  }
+  compile (mmproject(':core-domain:investment:mintos:base-mintos')) {
+    exclude module: ':com.idf.soul:base-spring'
+  }
+  testCompile "junit:junit:${junitVersion}"
+
+}
