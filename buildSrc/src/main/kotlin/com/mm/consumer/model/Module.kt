@@ -10,15 +10,16 @@ Build.gradle
 endpoint
  */
 enum class Module {
-  JAVA,
-  KOTLIN,
+    INIT,
+    JAVA,
+    KOTLIN,
 
-  RABBIT,
+    RABBIT,
 
-  MONGO,
-  JOOQ,
-  REQUERY,
+    MONGO,
+    JOOQ,
+    REQUERY,
 
-  FEIGN,
-  RETROFIT
+    FEIGN,
+    RETROFIT
 }

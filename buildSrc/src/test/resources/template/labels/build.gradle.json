@@ -1,0 +1,20 @@
+{
+  "plugin": {
+    "java": "apply plugin: 'java'",
+    "kotlin": "apply plugin: 'kotlin'"
+  },
+  "pluginSettings": {
+  },
+  "buildscriptClasspath": {
+    "init": "    dependencies {\n         #{buildscriptClasspath}\n    }"
+  },
+  "dependency": {
+    "init": "dependencies {\n    #{dependency}\n}"
+  },
+  "sourceSets": {
+    "init": "sourceSets {\n    #{sourceSets}\n}",
+    "jooq": "main.kotlin.srcDirs += 'build/generated-src/jooq/db'"
+  },
+  "ext": {
+  }
+}
