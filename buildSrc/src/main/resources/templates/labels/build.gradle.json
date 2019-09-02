@@ -7,16 +7,20 @@
     "pluginSettings": {
     },
     "buildscriptClasspath": {
-      "init": "    dependencies {\n         #{buildscriptClasspath}\n    }"
+      "init": "    dependencies {\n         #{buildscriptClasspath}\n    }",
+      "kotlin": "classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\""
     },
     "dependency": {
-      "init": "dependencies {\n    #{dependency}\n}"
+      "init": "dependencies {\n    #{dependency}\n     testCompile(\"org.junit.jupiter:junit-jupiter-api:$jupiterVersion\")\n    testRuntime(\"org.junit.jupiter:junit-jupiter-engine:$jupiterVersion\")\n}\n",
+      "kotlin": "testImplementation(\"com.nhaarman.mockitokotlin2:ito-kotlin:$mockitoKotlinVersion\") {\n    exclude group: 'org.jetbrains.kotlin'\n  }\n",
+      "java": "testCompile(\"org.mockito:mockito-core:$mockito2Version\")\n"
     },
     "sourceSets": {
       "init": "sourceSets {\n    #{sourceSets}\n}",
       "jooq": "main.kotlin.srcDirs += 'build/generated-src/jooq/db'"
     },
     "ext": {
+      "jooq": ""
     }
   }
 }

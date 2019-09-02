@@ -1,5 +1,7 @@
 package com.mm.consumer.model
 
+import com.fasterxml.jackson.annotation.JsonValue
+
 /*
 spring5  (java + kotlin)
 - jooq
@@ -9,17 +11,17 @@ spring5  (java + kotlin)
 Build.gradle
 endpoint
  */
-enum class Module {
-    INIT,
-    JAVA,
-    KOTLIN,
+enum class Module(@get:JsonValue val _name: String)  {
+    INIT("init"),
+    JAVA("java"),
+    KOTLIN("kotlin"),
 
-    RABBIT,
+    RABBIT("rabbit"),
 
-    MONGO,
-    JOOQ,
-    REQUERY,
+    MONGO("mongo"),
+    JOOQ("jooq"),
+    REQUERY("requery"),
 
-    FEIGN,
-    RETROFIT
+    FEIGN("feign"),
+    RETROFIT("retrofit")
 }

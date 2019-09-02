@@ -13,13 +13,12 @@ import java.util.stream.Collectors
 object LabelLoader {
 
     private val mapper = ObjectMapper().registerModule(KotlinModule())
-        .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
 
     fun loadLabels(jsonPath: String): LabelHolder {
         javaClass.classLoader.getResourceAsStream(jsonPath).use { input ->
             val reader = BufferedReader(InputStreamReader(input ?: throw FileNotFoundException("$jsonPath not found")))
             val json = reader.lines().collect(Collectors.joining(System.lineSeparator()))
-            return mapper.readValue<LabelHolder>(json)
+            return mapper.readValue(json)
         }
     }
 }
