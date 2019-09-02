@@ -13,4 +13,11 @@ internal class GradleBuildTemplateBuilderTest {
     builder.build(emptyMap())
     Assertions.assertTrue(File(testProjectDir.absolutePath + "/build.gradle").exists())
   }
+
+  @Test
+  fun `should create build gradle with `(@TempDir testProjectDir: File) {
+    val builder = GradleBuildTemplateBuilder(testProjectDir.absolutePath, FullPathFileOverWriteCreator)
+    builder.build(emptyMap())
+    Assertions.assertTrue(File(testProjectDir.absolutePath + "/build.gradle").exists())
+  }
 }
