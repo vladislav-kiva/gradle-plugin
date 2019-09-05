@@ -11,7 +11,7 @@ spring5  (java + kotlin)
 Build.gradle
 endpoint
  */
-enum class Module(@get:JsonValue val _name: String)  {
+enum class Module(@get:JsonValue val _name: String) {
     INIT("init"),
     JAVA("java"),
     KOTLIN("kotlin"),

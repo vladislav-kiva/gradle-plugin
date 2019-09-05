@@ -4,5 +4,5 @@ import com.mm.consumer.model.Module
 
 interface TemplateBuilder {
 
-  fun build(modules: Map<Module, String>)
+    fun build(modules: Set<Module>, innerFilePath: String, templatePath: String, labelsPath: String?)
 }

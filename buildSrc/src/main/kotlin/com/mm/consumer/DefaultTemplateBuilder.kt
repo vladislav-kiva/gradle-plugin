@@ -1,8 +1,10 @@
-package com.mm.consumer.resolver
+package com.mm.consumer
 
 import com.mm.consumer.label.LabelLoader
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
+import com.mm.consumer.resolver.FileCreator
+import com.mm.consumer.resolver.TemplateBuilder
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -10,33 +12,27 @@ import java.io.InputStreamReader
 import java.nio.file.Paths
 import java.util.stream.Collectors
 
-class GradleBuildTemplateBuilder(
+class DefaultTemplateBuilder(
     modulePath: String,
-    country: String,
+    private val labelReplacer: LabelReplacer,
     private val fileCreator: FileCreator
 ) : TemplateBuilder {
 
     private val fullPath: String = System.getProperty("user.dir") + modulePath
-    private val genFileName = "/build.gradle"
-    private val template = "templates/build.gradle.template"
-    private val jsonPath = "templates/labels/build.gradle.json"
-    private val labelReplacer = LabelReplacer(country, modulePath)
 
-    override fun build(modules: Map<Module, String>) {
-        val genFilePath = Paths.get(fullPath + genFileName)
+    override fun build(modules: Set<Module>, innerFilePath: String, templatePath: String, labelsPath: String?) {
+        val genFilePath = Paths.get(fullPath + innerFilePath)
         fileCreator.createFileWithDirectories(genFilePath.toFile())
-        javaClass.classLoader.getResourceAsStream(template).use { input ->
+        javaClass.classLoader.getResourceAsStream(templatePath).use { input ->
             FileOutputStream(genFilePath.toFile()).use { fileOutStream ->
-                input ?: throw FileNotFoundException("File = $template not found")
-                val labels = LabelLoader.loadLabels(jsonPath)
+                input ?: throw FileNotFoundException("File = $templatePath not found")
+                val labels = labelsPath?.let { path -> LabelLoader.loadLabels(path) }
                 val reader = BufferedReader(InputStreamReader(input))
                 val template = reader.lines().collect(Collectors.joining(System.lineSeparator()))
-                val result = labelReplacer.replaceLabels(template, labels.labelModuleMap, modules.keys)
+                val result = labelReplacer.replaceLabels(template, labels?.labelModuleMap, modules)
                 fileOutStream.write(result.toByteArray())
             }
         }
-        val labels = LabelLoader.loadLabels(jsonPath)
-        println(labels)
     }
 
 }
