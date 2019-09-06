@@ -1,12 +1,12 @@
 package #{package}
 
 import com.mm.base.endpoint.MMApp
-import #{package}.config.#{country_camel}#{submodule_camel}Config
+import #{package}.config.#{countryCamel}#{submoduleCamel}Config
 
-object #{country_camel}#{submodule_camel}App {
+object #{countryCamel}#{submoduleCamel}App {
 
   @JvmStatic
   fun main(args: Array<String>) {
-    MMApp.run("#{country_lowercase}", "#{country_lowercase}-#{submodule_lower_hyphen}", #{country_camel}#{submodule_camel}Config::class.java)
+    MMApp.run("#{countryLowercase}", "#{countryLowercase}-#{submoduleLowerHyphen}", #{countryCamel}#{submoduleCamel}Config::class.java)
   }
 }

@@ -7,13 +7,13 @@ import org.apache.log4j.LogManager
 class LabelReplacer(country: String, modulePath: String) {
 
     private val logger = LogManager.getLogger(LabelReplacer::class.java)
-    val subModule = modulePath.substringAfterLast("/", modulePath.substringAfterLast("\\\\"))
+    private val subModule = modulePath.substringAfterLast("/", modulePath.substringAfterLast("\\\\"))
     private val defaults = mapOf(
-        "#{submodule_camel}" to CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, subModule),
-        "#{submodule_lower_hyphen}" to CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, subModule),
-        "#{country_lowercase}" to country.toLowerCase(),
-        "#{country_camel}" to country[0].toUpperCase() + country.substring(1).toLowerCase(),
-        "#{country_uppercase}" to country.toUpperCase(),
+        "#{submoduleCamel}" to CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, subModule),
+        "#{submoduleLowerHyphen}" to CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, subModule),
+        "#{countryLowercase}" to country.toLowerCase(),
+        "#{countryCamel}" to country[0].toUpperCase() + country.substring(1).toLowerCase(),
+        "#{countryUppercase}" to country.toUpperCase(),
         "#{package}" to "com.mm.$country${modulePath.toLowerCase().replace(Regex("[\\\\/]"), ".")}"
     )
 

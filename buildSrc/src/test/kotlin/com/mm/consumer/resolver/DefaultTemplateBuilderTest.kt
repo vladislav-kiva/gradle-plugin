@@ -52,4 +52,45 @@ internal class DefaultTemplateBuilderTest {
         Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/private-area/src/kotlin/com/mm/gateway/private-area/BrPrivateAreaApp.kt").exists())
         System.setProperty("user.dir", userDir)
     }
+
+    @Test
+    fun `should create mmApp mmConfig rabbitConfig and mmController`(@TempDir testProjectDir: File) {
+        System.setProperty("user.dir", testProjectDir.absolutePath.toString())
+        val country = "br"
+        val countryCamel = country[0].toUpperCase() + country.substring(1).toLowerCase()
+        val modulePath = "/gateway/private-area"
+        val appCamel = if (modulePath.contains("/")) {
+            CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, modulePath.substringAfterLast("/"))
+        } else {
+            CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, modulePath)
+        }
+        val labelReplacer = LabelReplacer(country, modulePath)
+        val userDir = System.getProperty("user.dir")
+        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+
+        var genFileName = "/src/kotlin/com/mm$modulePath/$countryCamel${appCamel}App.kt"
+        var template = "templates/MMAppTemplate.kt.template"
+
+        builder.build(setOf(Module.KOTLIN), genFileName, template, null)
+
+        genFileName = "/src/kotlin/com/mm$modulePath/config/$countryCamel${appCamel}Config.kt"
+        template = "templates/Config.kt.template"
+
+        builder.build(setOf(Module.KOTLIN), genFileName, template, "templates/labels/config.kt.json")
+
+        genFileName = "/src/kotlin/com/mm$modulePath/controller/$countryCamel${appCamel}Controller.kt"
+        template = "templates/MMController.kt.template"
+        builder.build(setOf(Module.KOTLIN), genFileName, template, null)
+
+
+        genFileName = "/src/kotlin/com/mm$modulePath/config/$countryCamel${appCamel}RabbitConfig.kt"
+        template = "templates/Rabbit.kt.template"
+        builder.build(setOf(Module.KOTLIN), genFileName, template, null)
+
+        Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/private-area/src/kotlin/com/mm/gateway/private-area/config/BrPrivateAreaRabbitConfig.kt").exists())
+        Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/private-area/src/kotlin/com/mm/gateway/private-area/controller/BrPrivateAreaController.kt").exists())
+        Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/private-area/src/kotlin/com/mm/gateway/private-area/config/BrPrivateAreaConfig.kt").exists())
+        Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/private-area/src/kotlin/com/mm/gateway/private-area/BrPrivateAreaApp.kt").exists())
+        System.setProperty("user.dir", userDir)
+    }
 }

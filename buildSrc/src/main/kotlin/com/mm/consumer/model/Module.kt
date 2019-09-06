@@ -20,7 +20,6 @@ enum class Module(@get:JsonValue val _name: String) {
 
     MONGO("mongo"),
     JOOQ("jooq"),
-    REQUERY("requery"),
 
     FEIGN("feign"),
     RETROFIT("retrofit")

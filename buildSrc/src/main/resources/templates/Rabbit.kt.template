@@ -1,0 +1,19 @@
+package #{package}.config
+
+import com.mm.eventbus.EventBus
+import com.mm.eventbus.reactor.ReactorConfiguration
+import com.mm.eventbus.reactor.ReactorEventBus
+import com.mm.eventbus.settings.RabbitSettings
+import org.cfg4j.provider.ConfigurationProvider
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+class #{countryCamel}#{submoduleCamel}EventBusConfig {
+
+    @Bean
+    fun eventBus(): EventBus {
+        val settings = configurationProvider.bind("rabbit.eventbus", RabbitSettings::class.java)
+        return ReactorEventBus(ReactorConfiguration(settings), getObjectMapper())
+    }
+}

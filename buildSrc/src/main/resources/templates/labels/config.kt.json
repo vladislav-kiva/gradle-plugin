@@ -1,0 +1,10 @@
+{
+  "labelModuleMap": {
+    "import": {
+      "jooq": "import #{package}.config.#{country}#{submoduleCamel}JooqConfig"
+    },
+    "springConfig": {
+      "jooq": ",\n#{country}#{submoduleCamel}JooqConfig::class.java"
+    }
+  }
+}
