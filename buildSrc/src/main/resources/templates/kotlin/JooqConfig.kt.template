@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Scope
 
 @Configuration
-open class #{country}#{submoduleCamel}JooqConfig(configurationProvider: ConfigurationProvider) {
+open class #{countryCamel}#{submoduleCamel}JooqConfig(configurationProvider: ConfigurationProvider) {
 
   private val configObject = configurationProvider.bind("moneyman.jooq", JooqSettings::class.java)
 

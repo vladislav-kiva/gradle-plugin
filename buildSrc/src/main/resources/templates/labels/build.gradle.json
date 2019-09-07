@@ -1,21 +1,23 @@
 {
   "labelModuleMap": {
     "plugin": {
-      "java": "apply plugin: 'java'",
-      "kotlin": "apply plugin: 'kotlin'"
+      "java": "apply plugin: 'java'\n",
+      "kotlin": "apply plugin: 'kotlin'\n"
     },
     "pluginSettings": {
     },
     "buildscriptClasspath": {
-      "init": "    dependencies {\n         #{buildscriptClasspath}\n    }",
-      "kotlin": "classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\""
+      "init": "    dependencies {\n#{buildscriptClasspath}\n    }",
+      "kotlin": "        classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\""
     },
     "dependency": {
-      "init": "dependencies {\n    #{dependency}\n     testCompile(\"org.junit.jupiter:junit-jupiter-api:$jupiterVersion\")\n    testRuntime(\"org.junit.jupiter:junit-jupiter-engine:$jupiterVersion\")\n}\n",
-      "rabbit": "  compile \"com.idf.soul:mm-event-bus:$soulVersion\"\n",
-      "mongo": "  compile \"com.idf.soul:config-mongo:$soulVersion\"\n",
-      "kotlin": "\ttestCompile(\"org.junit.jupiter:junit-jupiter-api:$jupiterVersion\")\n\ttestRuntime(\"org.junit.jupiter:junit-jupiter-engine:$jupiterVersion\")\n",
-      "java": "testCompile(\"org.mockito:mockito-core:$mockito2Version\")\n"
+      "init": "dependencies {\n#{dependency}\n    testCompile \"org.junit.jupiter:junit-jupiter-api:$jupiterVersion\"\n    testRuntime \"org.junit.jupiter:junit-jupiter-engine:$jupiterVersion\"\n}\n",
+      "kotlin": "    compile \"com.idf.soul:base-spring5:${soulVersion}\"",
+      "java": "    compile \"com.idf.soul:base-spring5:${soulVersion}\"",
+      "rabbit": "    compile \"com.idf.soul:mm-event-bus:$soulVersion\"",
+      "mongo": "    compile \"com.idf.soul:config-mongo:$soulVersion\"",
+      "retrofit": "    compile \"com.idf.soul:config-retrofit:$soulVersion\"",
+      "feign": "    compile \"com.idf.soul:mm-feign:$soulVersion\""
     },
     "sourceSets": {
       "init": "sourceSets {\n    #{sourceSets}\n}",

@@ -22,16 +22,22 @@ class LabelReplacer(country: String, modulePath: String) {
         labels?.forEach { (label, moduleMap) ->
             if (text.contains(label)) {
                 val configuredModules = moduleMap?.filter { entry -> includedModules.contains(entry.key) }
-                if (configuredModules != null) {
+                if (configuredModules != null && configuredModules.isNotEmpty()) {
                     moduleMap.filter { entry -> entry.key == Module.INIT }
                         .forEach { entry -> result = result.replace("#{$label}", entry.value) }
-                    configuredModules.forEach { entry -> result = result.replace("#{$label}", entry.value) }
+                    configuredModules.forEach { entry ->
+                        result = result.replace("#{$label}", "${entry.value}\n#{$label}")
+                    }
                 }
             } else {
                 logger.warn("Label $label not found")
             }
         }
         defaults.forEach { entry -> result = result.replace(entry.key, entry.value) }
-        return result.replace(Regex("#\\{.*?}[\\r\\n]*"), "")
+        result = result.replace(Regex("#\\{.*?}[\\r\\n]*"), "")
+        while (result.endsWith("\n") || result.endsWith("\r")) {
+            result = result.substring(0, result.length - 1)
+        }
+        return result
     }
 }

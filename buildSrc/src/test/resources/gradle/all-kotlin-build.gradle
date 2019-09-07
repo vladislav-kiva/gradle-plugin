@@ -1,0 +1,102 @@
+apply plugin: 'kotlin'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+dependencies {
+    compile "com.idf.soul:base-spring5:${soulVersion}"
+    compile "com.idf.soul:mm-event-bus:$soulVersion"
+    compile "com.idf.soul:config-mongo:$soulVersion"
+    compile "com.idf.soul:config-retrofit:$soulVersion"
+    compile "com.idf.soul:mm-feign:$soulVersion"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+}
+
+
+sourceSets {
+    main.kotlin.srcDirs += 'build/generated-src/jooq/db'
+}
+
+ext {
+    mmJooqApp = 'BR'
+}
+
+apply from: "${rootDir}/_gradle/jooq.gradle"
+
+jooq {
+    db(sourceSets.main) {
+        generator {
+            database {
+                includes = 'credit|borrower' // TODO ADD UR TABLES
+                /* TODO CUSTOMIZE UR CONVERTERS
+                customTypes {
+                    customType {
+                        name = 'LocalDateTimeConverter'
+                        converter = 'com.mm.db.jooq.converter.LocalDateTimeConverter'
+                        type = java.time.LocalDateTime.class.name
+                    }
+                    customType {
+                        name = 'LocalDateConverter'
+                        converter = 'com.mm.db.jooq.converter.LocalDateConverter'
+                        type = java.time.LocalDate.class.name
+                    }
+                    customType {
+                        name = 'BooleanConverter'
+                        type = 'java.lang.Boolean'
+                        converter = 'com.mm.db.jooq.converter.BooleanConverter'
+                    }
+                    customType {
+                        name = 'ChipherConverter'
+                        type = 'java.lang.String'
+                        converter = 'com.mm.db.jooq.converter.CryptStringConverter'
+                    }
+                    forcedTypes {
+                        forcedType() {
+                            name = 'LocalDateTimeConverter'
+                            expression = '.*'
+                            types = 'datetime|timestamp'
+                        }
+                        forcedType() {
+                            name = 'LocalDateConverter'
+                            expression = '.*'
+                            types = 'date'
+                        }
+                        forcedType {
+                            name = 'ChipherConverter'
+                            expression = '.*\\.user_account\\.phone'
+                            types = '.*'
+                        }
+                        forcedType {
+                            name = 'ChipherConverter'
+                            expression = '.*\\.collector_action_contact\\.value'
+                            types = '.*'
+                        }
+                        forcedType() {
+                            name = 'BooleanConverter'
+                            expression = '.*'
+                            types = 'TINYINT'
+                        }
+                    }
+                }
+                */
+                generate {
+                    pojos = true
+                    daos = true
+                    generatedAnnotation = false
+                    fluentSetters = true
+                }
+
+                target {
+                    packageName = 'com.mm.br.gateway.private-area.db.generated'
+                }
+            }
+        }
+    }
+}
