@@ -94,7 +94,7 @@ jooq {
                 }
 
                 target {
-                    packageName = 'com.mm.br.gateway.private-area.db.generated'
+                    packageName = 'com.mm.br.gateway.registration.db.generated'
                 }
             }
         }

@@ -1,0 +1,12 @@
+{
+  "labelModuleMap": {
+    "import": {
+      "jooq": "import #{package}.config.#{countryCamel}#{submoduleCamel}JooqConfig;",
+      "rabbit": "import #{package}.config.#{countryCamel}#{submoduleCamel}EventBusConfig;"
+    },
+    "springConfig": {
+      "jooq": ",\n  #{countryCamel}#{submoduleCamel}JooqConfig.class",
+      "rabbit": ",\n  #{countryCamel}#{submoduleCamel}EventBusConfig.class"
+    }
+  }
+}

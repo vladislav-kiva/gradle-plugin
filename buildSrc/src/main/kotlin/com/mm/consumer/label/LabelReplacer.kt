@@ -28,13 +28,16 @@ class LabelReplacer(country: String, modulePath: String) {
                     configuredModules.forEach { entry ->
                         result = result.replace("#{$label}", "${entry.value}\n#{$label}")
                     }
+                    configuredModules.forEach { entry ->
+                        result = result.replace("!{$label}", "${entry.value}!{$label}")
+                    }
                 }
             } else {
                 logger.warn("Label $label not found")
             }
         }
         defaults.forEach { entry -> result = result.replace(entry.key, entry.value) }
-        result = result.replace(Regex("#\\{.*?}[\\r\\n]*"), "")
+        result = result.replace(Regex("[\\r\\n]?[\\s]*[#!]\\{.*?}"), "")
         while (result.endsWith("\n") || result.endsWith("\r")) {
             result = result.substring(0, result.length - 1)
         }

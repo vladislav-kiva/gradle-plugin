@@ -1,19 +1,36 @@
 package #{package}.config
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.mm.eventbus.EventBus
 import com.mm.eventbus.reactor.ReactorConfiguration
 import com.mm.eventbus.reactor.ReactorEventBus
 import com.mm.eventbus.settings.RabbitSettings
+import java.util.TimeZone
 import org.cfg4j.provider.ConfigurationProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class #{countryCamel}#{submoduleCamel}EventBusConfig {
+class #{countryCamel}#{submoduleCamel}EventBusConfig(val configurationProvider: ConfigurationProvider) {
 
-    @Bean
-    fun eventBus(): EventBus {
-        val settings = configurationProvider.bind("rabbit.eventbus", RabbitSettings::class.java)
-        return ReactorEventBus(ReactorConfiguration(settings), getObjectMapper())
-    }
+  @Bean
+  fun eventBus(): EventBus {
+    val settings = configurationProvider.bind("rabbit.eventbus", RabbitSettings::class.java)
+    return ReactorEventBus(ReactorConfiguration(settings), getObjectMapper())
+  }
+
+  fun getObjectMapper(): ObjectMapper {
+    val objectMapper = ObjectMapper()
+    objectMapper.registerModule(JavaTimeModule())
+    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    objectMapper.setTimeZone(TimeZone.getDefault())
+    objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    objectMapper.registerModule(KotlinModule())
+    return objectMapper
+  }
 }

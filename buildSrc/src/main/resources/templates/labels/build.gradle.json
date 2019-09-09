@@ -1,8 +1,8 @@
 {
   "labelModuleMap": {
     "plugin": {
-      "java": "apply plugin: 'java'\n",
-      "kotlin": "apply plugin: 'kotlin'\n"
+      "java": "apply plugin: 'java'",
+      "kotlin": "apply plugin: 'kotlin'"
     },
     "pluginSettings": {
     },

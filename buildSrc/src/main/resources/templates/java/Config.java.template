@@ -1,0 +1,21 @@
+package #{package}.config;
+
+import com.mm.base.config.AppConfigurationConfig;
+import com.mm.base.config.SwaggerConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import #{package}.controller.#{countryCamel}#{submoduleCamel}Controller;
+#{import}
+
+@Configuration
+@Import({
+  AppConfigurationConfig.class,
+  SwaggerConfig.class!{springConfig}
+})
+public class #{countryCamel}#{submoduleCamel}Config {
+
+  @Bean
+  public #{countryCamel}#{submoduleCamel}Controller #{countryLowercase}#{submoduleCamel}Controller() {
+    return new #{countryCamel}#{submoduleCamel}Controller();
+  }
+}

@@ -5,16 +5,15 @@ import com.mm.base.config.SwaggerConfig
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import #{package}.controller.#{countryCamel}#{submoduleCamel}Controller
-import #{package}.config.#{countryCamel}#{submoduleCamel}
 #{import}
 
 @Configuration
 @Import(
-    AppConfigurationConfig::class,
-    SwaggerConfig::class#{springConfig}
+  AppConfigurationConfig::class,
+  SwaggerConfig::class!{springConfig}
 )
 open class #{countryCamel}#{submoduleCamel}Config {
 
   @Bean
-  open fun #{countryCamel}#{submoduleCamel}Controller() = #{countryCamel}#{submoduleCamel}Controller()
+  open fun #{countryLowercase}#{submoduleCamel}Controller() = #{countryCamel}#{submoduleCamel}Controller()
 }

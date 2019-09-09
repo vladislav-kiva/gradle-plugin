@@ -1,0 +1,12 @@
+package #{package};
+
+import com.mm.base.endpoint.MMApp;
+import #{package}.config.#{countryCamel}#{submoduleCamel}Config;
+
+public class #{countryCamel}#{submoduleCamel}App {
+
+  public static void main(String[] args) {
+    MMApp.run("#{countryLowercase}", "#{countryLowercase}-#{submoduleLowerHyphen}", #{countryCamel}#{submoduleCamel}Config.class);
+  }
+
+}
