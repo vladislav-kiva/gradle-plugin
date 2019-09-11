@@ -10,7 +10,7 @@ buildscript {
 }
 
 dependencies {
-    compile "com.idf.soul:base-spring5:${soulVersion}"
+    compile "com.idf.soul:base-spring5:$soulVersion"
     testCompile "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
 }

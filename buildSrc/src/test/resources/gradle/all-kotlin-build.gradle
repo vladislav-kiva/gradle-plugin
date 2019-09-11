@@ -10,7 +10,7 @@ buildscript {
 }
 
 dependencies {
-    compile "com.idf.soul:base-spring5:${soulVersion}"
+    compile "com.idf.soul:base-spring5:$soulVersion"
     compile "com.idf.soul:mm-event-bus:$soulVersion"
     compile "com.idf.soul:config-mongo:$soulVersion"
     compile "com.idf.soul:config-retrofit:$soulVersion"

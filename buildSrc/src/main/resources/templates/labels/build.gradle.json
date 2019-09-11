@@ -12,8 +12,8 @@
     },
     "dependency": {
       "init": "dependencies {\n#{dependency}\n    testCompile \"org.junit.jupiter:junit-jupiter-api:$jupiterVersion\"\n    testRuntime \"org.junit.jupiter:junit-jupiter-engine:$jupiterVersion\"\n}\n",
-      "kotlin": "    compile \"com.idf.soul:base-spring5:${soulVersion}\"",
-      "java": "    compile \"com.idf.soul:base-spring5:${soulVersion}\"",
+      "kotlin": "    compile \"com.idf.soul:base-spring5:$soulVersion\"",
+      "java": "    compile \"com.idf.soul:base-spring5:$soulVersion\"",
       "rabbit": "    compile \"com.idf.soul:mm-event-bus:$soulVersion\"",
       "mongo": "    compile \"com.idf.soul:config-mongo:$soulVersion\"",
       "retrofit": "    compile \"com.idf.soul:config-retrofit:$soulVersion\"",

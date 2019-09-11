@@ -4,28 +4,31 @@ import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
 import com.mm.consumer.resolver.FullPathFileOverWriteCreator
 
-object DefaultTemplateCreatorService : TemplateCreatorService {
-
-    private val fileToTemplate = mapOf(
-        "/build.gradle" to mapOf("templates/build.gradle.template" to "templates/labels/build.gradle.json")
-    )
+class DefaultTemplateCreatorService(
+    private val userInputService: UserInputController = UserInputController
+) : TemplateCreatorService {
 
     override fun createTemplate(moduleExtension: ModuleExtension) {
-        var country: String?
-        var modulePath: String?
-        var modules: Set<Module>
-        do {
-            country = UserInputService.inputCountry()
-        } while (country == null)
-        do {
-            modulePath = UserInputService.inputModulePath()
-        } while (modulePath == null)
-        do {
-            modules = UserInputService.inputModules().toSet()
-        } while (modules.isEmpty())
+        val country = userInputService.inputCountry()
+        val modulePath = userInputService.inputModulePath()
+        val modules = userInputService.inputModules().toSet()
         val labelReplacer = LabelReplacer(country, modulePath)
         val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
-        builder.build(modules, "/build.gradle", "templates/build.gradle.template", "templates/labels/build.gradle.json")
-        builder.build(modules, "/src/com/mm/$country/${modulePath.toLowerCase()}/", "templates/build.gradle.template", "templates/labels/build.gradle.json")
+        val resolver = ModuleFileResolverService(country, modulePath)
+        if (modules.contains(Module.KOTLIN)) {
+            val kotlinModules = resolver.getFilesForModules(Module.KOTLIN)
+            modules.forEach { userModule ->
+                kotlinModules?.get(userModule)?.forEach { kotlinModule ->
+                    builder.build(modules, kotlinModule.key, kotlinModule.value.first, kotlinModule.value.second)
+                }
+            }
+        } else if (modules.contains(Module.JAVA)) {
+            val javaModules = resolver.getFilesForModules(Module.JAVA)
+            modules.forEach { userModule ->
+                javaModules?.get(userModule)?.forEach { kotlinModule ->
+                    builder.build(modules, kotlinModule.key, kotlinModule.value.first, kotlinModule.value.second)
+                }
+            }
+        }
     }
 }

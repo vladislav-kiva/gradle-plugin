@@ -19,6 +19,6 @@ open class TemplateTask : DefaultTask() {
         if (extension == null) {
             extension = ModuleExtension()
         }
-        DefaultTemplateCreatorService.createTemplate(extension)
+        DefaultTemplateCreatorService().createTemplate(extension)
     }
 }
