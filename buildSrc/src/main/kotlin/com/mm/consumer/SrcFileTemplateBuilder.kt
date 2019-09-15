@@ -12,13 +12,14 @@ import java.io.InputStreamReader
 import java.nio.file.Paths
 import java.util.stream.Collectors
 
-class DefaultTemplateBuilder(
+class SrcFileTemplateBuilder(
     modulePath: String,
     private val labelReplacer: LabelReplacer,
-    private val fileCreator: FileCreator
+    private val fileCreator: FileCreator,
+    rootDir: String = System.getProperty("user.dir")
 ) : TemplateBuilder {
 
-    private val fullPath: String = System.getProperty("user.dir") + modulePath
+    private val fullPath: String = rootDir + modulePath
 
     override fun build(modules: Set<Module>, innerFilePath: String, templatePath: String, labelsPath: String?) {
         val genFilePath = Paths.get(fullPath + innerFilePath)

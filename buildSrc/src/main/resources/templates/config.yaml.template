@@ -1,0 +1,5 @@
+opentracing:
+  jaeger:
+    ^extends: link.opentracing.jaeger
+
+#{config}

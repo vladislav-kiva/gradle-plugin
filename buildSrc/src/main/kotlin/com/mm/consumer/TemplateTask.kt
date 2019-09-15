@@ -1,6 +1,7 @@
 package com.mm.consumer
 
 import com.mm.consumer.model.Module
+import com.mm.consumer.service.DefaultTemplateCreatorService
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 

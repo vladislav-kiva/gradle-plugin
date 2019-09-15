@@ -1,7 +1,7 @@
 package com.mm.consumer.resolver
 
 import com.google.common.base.CaseFormat
-import com.mm.consumer.DefaultTemplateBuilder
+import com.mm.consumer.SrcFileTemplateBuilder
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
 import org.junit.jupiter.api.Assertions
@@ -11,7 +11,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
-internal class DefaultTemplateBuilderTest {
+internal class SrcFileTemplateBuilderTest {
 
     @Test
     fun `should create build gradle file with kotlin`(@TempDir testProjectDir: File) {
@@ -76,7 +76,7 @@ internal class DefaultTemplateBuilderTest {
         val genFileName = "/src/kotlin/com/mm/$country$modulePath/$countryCamel${appCamel}App.kt"
         val template = "templates/kotlin/MMAppTemplate.kt.template"
         val labelReplacer = LabelReplacer(country, modulePath)
-        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+        val builder = SrcFileTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
         builder.build(setOf(Module.KOTLIN, Module.JOOQ), genFileName, template, null)
         val generatedFile = File(
             testProjectDir.absolutePath + "/gateway/registration$genFileName"
@@ -101,7 +101,7 @@ internal class DefaultTemplateBuilderTest {
             CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, modulePath)
         }
         val labelReplacer = LabelReplacer(country, modulePath)
-        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+        val builder = SrcFileTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
 
         var genFileName = "/src/kotlin/com/mm/$country$modulePath/$countryCamel${appCamel}App.kt"
         var template = "templates/kotlin/MMAppTemplate.kt.template"
@@ -155,7 +155,7 @@ internal class DefaultTemplateBuilderTest {
             CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, modulePath)
         }
         val labelReplacer = LabelReplacer(country, modulePath)
-        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+        val builder = SrcFileTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
 
         var genFileName = "/src/java/com/mm/$country$modulePath/$countryCamel${appCamel}App.java"
         var template = "templates/java/MMAppTemplate.java.template"
@@ -216,6 +216,44 @@ internal class DefaultTemplateBuilderTest {
         System.setProperty("user.dir", userDir)
     }
 
+    @Test
+    fun `should create config yaml with all modules`(@TempDir testProjectDir: File) {
+        val userDir = System.getProperty("user.dir")
+        System.setProperty("user.dir", testProjectDir.absolutePath.toString())
+
+        val labelReplacer = LabelReplacer("mxn", "/config")
+        val builder = SrcFileTemplateBuilder("/config", labelReplacer, FullPathFileOverWriteCreator)
+        builder.build(
+            setOf(Module.JOOQ, Module.RABBIT, Module.MONGO),
+            "/mxn-gateway.yaml",
+            "templates/config.yaml.template",
+            "templates/labels/config.yaml.json"
+        )
+        val expected = javaClass.classLoader.getResource("config/all-mxn-gateway.yaml")
+        val yaml = File(testProjectDir.absolutePath + "/config/mxn-gateway.yaml")
+        Assertions.assertTrue(isFilesEquals(expected!!.path, yaml.path))
+        System.setProperty("user.dir", userDir)
+    }
+
+    @Test
+    fun `should create config yaml with no modules`(@TempDir testProjectDir: File) {
+        val userDir = System.getProperty("user.dir")
+        System.setProperty("user.dir", testProjectDir.absolutePath.toString())
+
+        val labelReplacer = LabelReplacer("mxn", "/config")
+        val builder = SrcFileTemplateBuilder("/config", labelReplacer, FullPathFileOverWriteCreator)
+        builder.build(
+            setOf(Module.KOTLIN),
+            "/mxn-gateway.yaml",
+            "templates/config.yaml.template",
+            "templates/labels/config.yaml.json"
+        )
+        val expected = javaClass.classLoader.getResource("config/no-mxn-gateway.yaml")
+        val yaml = File(testProjectDir.absolutePath + "/config/mxn-gateway.yaml")
+        Assertions.assertTrue(isFilesEquals(expected!!.path, yaml.path))
+        System.setProperty("user.dir", userDir)
+    }
+
     private fun createBuildGradleWithModules(modules: Set<Module>) {
         val country = "br"
         val genFileName = "/build.gradle"
@@ -223,7 +261,7 @@ internal class DefaultTemplateBuilderTest {
         val jsonPath = "templates/labels/build.gradle.json"
         val modulePath = "/gateway/registration"
         val labelReplacer = LabelReplacer(country, modulePath)
-        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+        val builder = SrcFileTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
         builder.build(
             modules,
             genFileName,

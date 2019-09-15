@@ -1,4 +1,4 @@
-package com.mm.consumer
+package com.mm.consumer.service
 
 import com.google.common.base.CaseFormat
 import com.mm.consumer.model.Module

@@ -1,0 +1,16 @@
+opentracing:
+  jaeger:
+    ^extends: link.opentracing.jaeger
+
+moneyman.jooq:
+  ^extends: link.db.moneyman
+
+secretKey: ${link.encryption.moneyman.key}
+
+rabbit.eventbus:
+  ^extends: link.eventbus
+  routingKeys: []
+
+mongo:
+  name: mx-credit-policy
+  ^extends: link.db.mongo.cluster

@@ -1,6 +1,7 @@
 package com.mm.consumer
 
 import com.mm.consumer.model.Module
+import com.mm.consumer.service.ModuleFileResolverService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

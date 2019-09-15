@@ -1,0 +1,95 @@
+pluginManagement {
+    repositories {
+        maven {
+            url "${nexusPublicRepo}"
+            credentials {
+                username "${nexusUsername}"
+                password "${nexusPassword}"
+            }
+        }
+    }
+}
+
+import groovy.json.JsonSlurper
+
+import java.nio.file.Paths
+import java.util.zip.GZIPInputStream
+
+import static App.*
+import static Domain.*
+
+rootProject.name = 'mm-platform'
+
+ext {
+    components = [] as List
+}
+
+enum App {
+
+    BASE,
+    BR,
+    PL,
+    ES,
+    ES_SOLVA,
+    GE,
+    RU,
+    RU_SOLVA,
+    KZ,
+    KZ_SOLVA,
+    AMMO,
+    GE_SOLVA,
+    MX,
+    ALL
+}
+
+enum Domain {
+
+    CORE,
+    AUTH,
+    INFRA,
+    PRODUCT,
+    BORROWER,
+    BORROWER_BEHAVIOUR,
+    COLLECTOR,
+    BONUS,
+    MARKETING,
+    CREDIT_POLICY,
+    IOVATION,
+    CREDIT_BUREAU,
+    NOTIFICATION,
+    CREDIT_STATE,
+    REGISTRATION,
+    INCUBATION,
+    PAYMENT_INTEGRATION,
+    PAYMENT_INCOMING,
+    PAYMENT_OUTGOING,
+    PRIVATE_AREA,
+    VERIFICATION,
+    GENESYS,
+    INVESTMENT,
+    PARTNER,
+    CONTACT,
+    INDEX,
+    SALE,
+    ALL
+}
+
+includeComponent ':core-domain:component:sqlizer', BASE, INFRA
+includeComponent ':kz:component:file-storage:base-file-storage', [KZ, KZ_SOLVA], INCUBATION
+includeComponent ':kz:component:file-storage:kz-solva-file-storage', [KZ, KZ_SOLVA], INCUBATION
+includeComponent ':core-domain:external-stub', BASE, INFRA
+includeComponent ':core-domain:experiment:base-experiment', BASE, CORE
+includeComponent ':core-domain:experiment:experiment-old', BASE, CORE
+includeComponent ':ru:dictionary', [RU, RU_SOLVA], CORE
+
+includeComponent ':kz:experiment:kz-experiment', KZ, CORE
+includeComponent ':kz:experiment:kz-solva-experiment', KZ_SOLVA, CORE
+includeComponent ':ru:retro:delete-duplicated-borrower', RU, CREDIT_BUREAU
+
+include collectProjects(components)
+
+private static String unzip(String compressed) {
+    def inflaterStream = new GZIPInputStream(new ByteArrayInputStream(compressed.decodeBase64()))
+    def uncompressedStr = inflaterStream.getText('UTF-8')
+    return uncompressedStr
+}

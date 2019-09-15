@@ -8,7 +8,7 @@ class LabelReplacer(country: String, modulePath: String) {
 
     private val logger = LogManager.getLogger(LabelReplacer::class.java)
     private val subModule = modulePath.substringAfterLast("/", modulePath.substringAfterLast("\\\\"))
-    private val defaults = mapOf(
+    val defaults = mapOf(
         "#{submoduleCamel}" to CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, subModule),
         "#{submoduleLowerHyphen}" to CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, subModule),
         "#{countryLowercase}" to country.toLowerCase(),

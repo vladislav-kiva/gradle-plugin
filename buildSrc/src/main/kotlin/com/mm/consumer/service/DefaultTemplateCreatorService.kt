@@ -1,11 +1,16 @@
-package com.mm.consumer
+package com.mm.consumer.service
 
+import com.mm.consumer.SrcFileTemplateBuilder
+import com.mm.consumer.ModuleExtension
+import com.mm.consumer.UserInputController
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
+import com.mm.consumer.resolver.DirectoryFinder
 import com.mm.consumer.resolver.FullPathFileOverWriteCreator
 
 class DefaultTemplateCreatorService(
-    private val userInputService: UserInputController = UserInputController
+    private val userInputService: UserInputController = UserInputController,
+    private val configCreatorService: ConfigCreatorService = ConfigCreatorService()
 ) : TemplateCreatorService {
 
     override fun createTemplate(moduleExtension: ModuleExtension) {
@@ -13,7 +18,7 @@ class DefaultTemplateCreatorService(
         val modulePath = userInputService.inputModulePath()
         val modules = userInputService.inputModules().toSet()
         val labelReplacer = LabelReplacer(country, modulePath)
-        val builder = DefaultTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
+        val builder = SrcFileTemplateBuilder(modulePath, labelReplacer, FullPathFileOverWriteCreator)
         val resolver = ModuleFileResolverService(country, modulePath)
         if (modules.contains(Module.KOTLIN)) {
             val kotlinModules = resolver.getFilesForModules(Module.KOTLIN)
@@ -30,5 +35,6 @@ class DefaultTemplateCreatorService(
                 }
             }
         }
+        configCreatorService.createConfig(modules, country, modulePath)
     }
 }

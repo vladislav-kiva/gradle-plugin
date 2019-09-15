@@ -1,0 +1,9 @@
+{
+  "labelModuleMap": {
+    "config": {
+      "jooq": "moneyman.jooq:\n  ^extends: link.db.moneyman\n\nsecretKey: ${link.encryption.moneyman.key}\n",
+      "rabbit": "rabbit.eventbus:\n  ^extends: link.eventbus\n  routingKeys: []\n",
+      "mongo": "mongo:\n  name: mx-credit-policy\n  ^extends: link.db.mongo.cluster\n"
+    }
+  }
+}
