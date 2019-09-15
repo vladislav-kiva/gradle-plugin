@@ -8,7 +8,7 @@ import java.io.File
 
 internal class ConfigCreatorServiceTest {
 
-    private val service = ConfigCreatorService()
+    private val service = ConfigCreatorService
 
     @Test
     fun `should create config file wit proper name`(@TempDir testProjectDir: File) {

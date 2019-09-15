@@ -1,6 +1,7 @@
 package com.mm.consumer.resolver
 
 import com.google.common.base.CaseFormat
+import com.mm.consumer.FileComporator
 import com.mm.consumer.SrcFileTemplateBuilder
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
@@ -22,7 +23,7 @@ internal class SrcFileTemplateBuilderTest {
         val expected = javaClass.classLoader.getResource("gradle/just-kotlin-build.gradle")
         Assertions.assertTrue(generatedFile.exists())
         Assertions.assertNotNull(expected)
-        Assertions.assertTrue(isFilesEquals(expected!!.path, generatedFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, generatedFile.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -35,7 +36,7 @@ internal class SrcFileTemplateBuilderTest {
         val expected = javaClass.classLoader.getResource("gradle/just-java-build.gradle")
         Assertions.assertTrue(generatedFile.exists())
         Assertions.assertNotNull(expected)
-        Assertions.assertTrue(isFilesEquals(expected!!.path, generatedFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, generatedFile.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -57,7 +58,7 @@ internal class SrcFileTemplateBuilderTest {
         val expected = javaClass.classLoader.getResource("gradle/all-kotlin-build.gradle")
         Assertions.assertTrue(generatedFile.exists())
         Assertions.assertNotNull(expected)
-        Assertions.assertTrue(isFilesEquals(expected!!.path, generatedFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, generatedFile.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -84,7 +85,7 @@ internal class SrcFileTemplateBuilderTest {
         val expected = javaClass.classLoader.getResource("kt/BrRegistrationApp.kt")
         Assertions.assertTrue(generatedFile.exists())
         Assertions.assertNotNull(expected)
-        Assertions.assertTrue(isFilesEquals(expected!!.path, generatedFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, generatedFile.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -134,7 +135,7 @@ internal class SrcFileTemplateBuilderTest {
         val configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/kotlin/com/mm/$country$modulePath/config/BrRegistrationConfig.kt")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
         Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/registration/src/kotlin/com/mm/$country$modulePath/controller/BrRegistrationController.kt").exists())
         Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/registration/src/kotlin/com/mm/$country$modulePath/config/BrRegistrationConfig.kt").exists())
         Assertions.assertTrue(File(testProjectDir.absolutePath + "/gateway/registration/src/kotlin/com/mm/$country$modulePath/BrRegistrationApp.kt").exists())
@@ -188,30 +189,30 @@ internal class SrcFileTemplateBuilderTest {
         var configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/java/com/mm/$country$modulePath/config/BrRegistrationConfig.java")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
         expected = javaClass.classLoader.getResource("java/BrRegistrationController.java")
         configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/java/com/mm/$country$modulePath/controller/BrRegistrationController.java")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
 
         expected = javaClass.classLoader.getResource("java/BrRegistrationEventBusConfig.java")
         configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/java/com/mm/$country$modulePath/config/BrRegistrationEventBusConfig.java")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
 
         expected = javaClass.classLoader.getResource("java/BrRegistrationJooqConfig.java")
         configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/java/com/mm/$country$modulePath/config/BrRegistrationJooqConfig.java")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
 
         expected = javaClass.classLoader.getResource("java/BrRegistrationApp.java")
         configFile =
             File(testProjectDir.absolutePath + "/gateway/registration/src/java/com/mm/$country$modulePath/BrRegistrationApp.java")
         Assertions.assertTrue(configFile.exists())
-        Assertions.assertTrue(isFilesEquals(expected!!.path, configFile.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, configFile.path))
 
         System.setProperty("user.dir", userDir)
     }
@@ -231,7 +232,7 @@ internal class SrcFileTemplateBuilderTest {
         )
         val expected = javaClass.classLoader.getResource("config/all-mxn-gateway.yaml")
         val yaml = File(testProjectDir.absolutePath + "/config/mxn-gateway.yaml")
-        Assertions.assertTrue(isFilesEquals(expected!!.path, yaml.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, yaml.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -250,7 +251,7 @@ internal class SrcFileTemplateBuilderTest {
         )
         val expected = javaClass.classLoader.getResource("config/no-mxn-gateway.yaml")
         val yaml = File(testProjectDir.absolutePath + "/config/mxn-gateway.yaml")
-        Assertions.assertTrue(isFilesEquals(expected!!.path, yaml.path))
+        Assertions.assertTrue(FileComporator.isFilesEquals(expected!!.path, yaml.path))
         System.setProperty("user.dir", userDir)
     }
 
@@ -268,35 +269,5 @@ internal class SrcFileTemplateBuilderTest {
             template,
             jsonPath
         )
-    }
-
-    private fun isFilesEquals(expectedPath: String, pathToCompare: String): Boolean {
-        val reader1 = BufferedReader(FileReader(expectedPath))
-        val reader2 = BufferedReader(FileReader(pathToCompare))
-        var line1: String? = reader1.readLine()
-        var line2: String? = reader2.readLine()
-        var areEqual = true
-        var lineNum = 1
-        while (line1 != null || line2 != null) {
-            if (line1 == null || line2 == null) {
-                areEqual = false
-                break
-            } else if (!line1.equals(line2, ignoreCase = true)) {
-                areEqual = false
-                break
-            }
-            line1 = reader1.readLine()
-            line2 = reader2.readLine()
-            lineNum++
-        }
-        reader1.close()
-        reader2.close()
-        return if (areEqual) {
-            true
-        } else {
-            println("Two files have different content. They differ at line $lineNum")
-            println("Expected has $line1 and but has $line2 at line $lineNum")
-            false
-        }
     }
 }

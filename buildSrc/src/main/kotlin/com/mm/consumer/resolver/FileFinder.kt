@@ -3,21 +3,19 @@ package com.mm.consumer.resolver
 import java.io.File
 import java.io.FileNotFoundException
 
-class DirectoryFinder : Finder {
+class FileFinder : Finder {
 
-    private val userDir = System.getProperty("user.dir")
-
-    override fun find(fileToFind: String): File {
-        var directory: File? = File(userDir)
+    override fun find(fileToFind: String, condition: (File) -> Boolean, rootDir: String): File {
+        var directory: File? = File(rootDir)
         while (directory != null) {
             val foundDir = directory.listFiles()?.asSequence()
-                ?.filter { file -> file.isDirectory && file.endsWith(fileToFind) }
+                ?.filter { file -> condition(file) && file.endsWith(fileToFind) }
                 ?.firstOrNull()
             if (foundDir != null) {
                 return foundDir
             }
             directory = directory.parentFile
         }
-        throw FileNotFoundException("Not found directory = $fileToFind")
+        throw FileNotFoundException("Not found file = $fileToFind")
     }
 }

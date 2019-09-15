@@ -1,19 +1,18 @@
 package com.mm.consumer.service
 
 import com.mm.consumer.SrcFileTemplateBuilder
-import com.mm.consumer.ModuleExtension
-import com.mm.consumer.UserInputController
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
-import com.mm.consumer.resolver.DirectoryFinder
+import com.mm.consumer.resolver.FileFinder
 import com.mm.consumer.resolver.FullPathFileOverWriteCreator
+import java.io.File
 
-class ConfigCreatorService {
+object ConfigCreatorService {
 
     fun createConfig(modules: Set<Module>, country: String, modulePath: String) {
         val countryLowerCase = country.toLowerCase()
-        val finder = DirectoryFinder()
-        val mmConfigFolder = finder.find("mm-config")
+        val finder = FileFinder()
+        val mmConfigFolder = finder.find("mm-config", { file -> file.isDirectory }, System.getProperty("user.dir"))
         val labelReplacer = LabelReplacer(countryLowerCase, modulePath)
         val submodule = labelReplacer.defaults["#{submoduleLowerHyphen}"]
         val builder = SrcFileTemplateBuilder(

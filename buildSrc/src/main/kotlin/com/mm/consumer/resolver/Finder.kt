@@ -4,5 +4,5 @@ import java.io.File
 
 interface Finder {
 
-    fun find(fileToFind: String): File
+    fun find(fileToFind: String, condition: (File) -> Boolean, rootDir: String): File
 }

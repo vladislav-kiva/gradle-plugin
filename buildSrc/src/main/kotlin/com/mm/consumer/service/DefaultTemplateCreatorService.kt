@@ -5,12 +5,12 @@ import com.mm.consumer.ModuleExtension
 import com.mm.consumer.UserInputController
 import com.mm.consumer.label.LabelReplacer
 import com.mm.consumer.model.Module
-import com.mm.consumer.resolver.DirectoryFinder
 import com.mm.consumer.resolver.FullPathFileOverWriteCreator
 
 class DefaultTemplateCreatorService(
     private val userInputService: UserInputController = UserInputController,
-    private val configCreatorService: ConfigCreatorService = ConfigCreatorService()
+    private val configCreatorService: ConfigCreatorService = ConfigCreatorService,
+    private val includeComponentService: IncludeComponentService = IncludeComponentService
 ) : TemplateCreatorService {
 
     override fun createTemplate(moduleExtension: ModuleExtension) {
@@ -36,5 +36,6 @@ class DefaultTemplateCreatorService(
             }
         }
         configCreatorService.createConfig(modules, country, modulePath)
+        includeComponentService.injectImport(country, modulePath)
     }
 }
